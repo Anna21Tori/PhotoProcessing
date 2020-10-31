@@ -57,15 +57,15 @@ public class Main extends JFrame {
         toolsPanel.addTools();
 
         mainPanel.setLayout(new BorderLayout());
-        mainPanel.add(canvas, BorderLayout.NORTH);
-        mainPanel.add(toolsPanel, BorderLayout.SOUTH);
-        //mainPanel.add(hist, BorderLayout.SOUTH);
+        mainPanel.add(canvas, BorderLayout.SOUTH);
+        mainPanel.add(toolsPanel, BorderLayout.NORTH);
+       // mainPanel.add(hist, BorderLayout.WEST);
         //==============================================================================================================
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         this.setContentPane(mainPanel);
-        this.setSize(new Dimension(720, 1000));
+        this.setSize(new Dimension(710, 900));
         this.setLocationRelativeTo(null);
     }
 

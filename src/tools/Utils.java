@@ -3,7 +3,7 @@ package tools;
 import panels.JCanvasHistogram;
 import panels.JCanvasPanel;
 
-import javax.print.attribute.standard.PresentationDirection;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
@@ -186,7 +186,7 @@ public class Utils {
         filter(matrix);
     }
 
-    public void filterGaussPass(){
+    public void filterGauss(){
 
         int [][] matrix = {
                 {1, 2, 1},
@@ -210,7 +210,6 @@ public class Utils {
                             int i = wi - matrix.length/2 + y;
                             int j = hi - matrix.length/2 + x;
 
-
                             int color =  new Color(copiedImage.getRGB(i, j)).getRed();
                             sumMatrix += matrix[y][x];
                             sum += color * matrix[y][x];
@@ -232,40 +231,33 @@ public class Utils {
     }
     public void dilatation(){
 
-        BufferedImage copedImage = copyImage();
-
-        for(int wi = 1; wi < dm.getWidth()-1; wi++){
-            for(int hi = 1; hi < dm.getHeight()-1; hi++){
-                for(int i = wi-1; i < wi + 1 ;i++){
-                    for(int j = hi-1; j < hi +1 ; j++) {
-                        int color =  copedImage.getRGB(i, j);
-                        if(color == Color.black.getRGB()) {
-                            dm.getCopedImage().setRGB(wi, hi, color);
-                            break;
-                        }
-                    }
-                }
-            }
-
-        }
-
-        canvasPanel.repaint();
-        histogram();
-        hist.repaint();
+       executeErosionOrDilatation(Color.black.getRGB());
     }
 
     public void erosion(){
 
-        BufferedImage copedImage = copyImage();
+        executeErosionOrDilatation(Color.white.getRGB());
+    }
 
-        for(int wi = 1; wi < dm.getWidth()-1; wi++){
-            for(int hi = 1; hi < dm.getHeight()-1; hi++){
-                for(int i = wi-1; i < wi + 1 ;i++){
-                    for(int j = hi-1; j < hi +1 ; j++) {
-                        int color =  copedImage.getRGB(i, j);
-                        if(color == Color.white.getRGB()) {
-                            dm.getCopedImage().setRGB(wi, hi, color);
-                            break;
+    private void executeErosionOrDilatation(int color){
+
+        BufferedImage copedImage = copyImage();
+        final int SIZE = 3;
+        for(int wi = 0; wi < dm.getWidth(); wi++){
+            for(int hi = 0; hi < dm.getHeight(); hi++){
+                for(int y = 0; y < SIZE ;y++){
+                    for(int x = 0; x < SIZE; x++) {
+
+                        int i = wi - SIZE/2 + y;
+                        int j = hi - SIZE/2 + x;
+
+                        if(i >= 0 && i < dm.getWidth() && j >= 0 && j < dm.getHeight()) {
+                            int currentColor = copedImage.getRGB(i, j);
+                            if ( currentColor == color) {
+                                dm.getCopedImage().setRGB(wi, hi, color);
+                                x= SIZE;
+                                y = SIZE;
+                            }
                         }
                     }
                 }
@@ -277,6 +269,16 @@ public class Utils {
         histogram();
         hist.repaint();
     }
+    public void morphologicalOpening(){
+        erosion();
+        dilatation();
+    }
+
+    public void morphologicalClosure(){
+        dilatation();
+        erosion();
+    }
+
 
     private BufferedImage copyImage(){
         ColorModel cm = dm.getCopedImage().getColorModel();

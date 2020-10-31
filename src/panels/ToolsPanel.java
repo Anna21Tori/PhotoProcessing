@@ -1,10 +1,9 @@
 package panels;
 
+import elements.ButtonRadio;
 import elements.Slider;
 import tools.Utils;
 import elements.Button;
-import elements.LabelValue;
-import elements.ButtonRadio;
 import layout.GBC;
 
 import javax.swing.*;
@@ -13,24 +12,25 @@ import java.awt.*;
 public class ToolsPanel extends JPanel {
 
     private Utils utils;
-    private ButtonGroup buttonGroupDarkenOrBrighten;
-    private ButtonRadio btnRadioDarken;
-    private ButtonRadio btnRadioBrighten;
+    private Button btnDarken;
+    private Button btnBrighten;
     private Slider sliderDarkenOrBrighten;
     private Slider sliderThresholding;
-    private Button btnDarkenOrBrighten;
     private Button btnThresholding;
     private Button btnReset;
-    private Button btnLowPassFilter;
-    private Button btnHighPassFilter;
-    private Button btnGaussPassFilter;
+    private Button btnFilter;
     private Button btnDilatation;
     private Button btnErosion;
-    private LabelValue labelDarkenOrBrighten;
-    private LabelValue labelThresholding;
+    private Button btnMorphologicalOpening;
+    private Button btnMorphologicalClosure;
+    private ButtonGroup btnGroupFilter;
+    private ButtonRadio btnRadioLowFilter;
+    private ButtonRadio btnRadioHighFilter;
+    private ButtonRadio btnRadioGaussFilter;
+
 
     public ToolsPanel(Utils utils) {
-        this.setPreferredSize(new Dimension(620, 350));
+        this.setPreferredSize(new Dimension(500, 350));
         this.setBackground(new Color(60, 63, 65));
         this.setLayout(new GridBagLayout());
         this.utils = utils;
@@ -38,101 +38,92 @@ public class ToolsPanel extends JPanel {
 
     public void addTools(){
 
-          buttonGroupDarkenOrBrighten = new ButtonGroup();
-
-          btnRadioDarken = new ButtonRadio("Darken", new Color(184,179,172), new Color(60, 63, 65));
-          btnRadioBrighten = new ButtonRadio("Brighten", new Color(184,179,172), new Color(60, 63, 65));
-
-          buttonGroupDarkenOrBrighten.add(btnRadioBrighten );
-          buttonGroupDarkenOrBrighten.add(btnRadioDarken);
-
-          btnDarkenOrBrighten =  new Button("OK", new Color(184,179,172), new Color(60, 63, 65) );
-
-          btnThresholding = new Button("OK", new Color(184,179,172), new Color(60, 63, 65) );
-
-          btnDilatation =  new Button("Dilation", new Color(184,179,172), new Color(60, 63, 65) );
-
-          btnErosion = new Button("Erosion", new Color(184,179,172), new Color(60, 63, 65) );
-
-          btnReset = new Button("Reset image", new Color(184,179,172), new Color(60, 63, 65) );
-          btnLowPassFilter = new Button("Low pass", new Color(184,179,172), new Color(60, 63, 65));
-          btnHighPassFilter = new Button("High pass", new Color(184,179,172), new Color(60, 63, 65));
-          btnGaussPassFilter = new Button("Gauss pass", new Color(184,179,172), new Color(60, 63, 65));
-
-          labelDarkenOrBrighten = new LabelValue("Value = 0", new Color(60, 63, 65), new Color(184,179,172) );
-          labelThresholding = new LabelValue("Value = 0", new Color(60, 63, 65), new Color(184,179,172) );
 
           sliderDarkenOrBrighten = new Slider(0, 255, 0);
           sliderThresholding = new Slider(0, 255, 0);
 
+          btnDarken = new Button("Darken", new Color(184,179,172), new Color(60, 63, 65));
+          btnBrighten = new Button("Brighten", new Color(184,179,172), new Color(60, 63, 65));
+
+
+
+          btnThresholding = new Button("Bin.", new Color(184,179,172), new Color(60, 63, 65) );
+          btnDilatation =  new Button("Dilation", new Color(184,179,172), new Color(60, 63, 65) );
+          btnErosion = new Button("Erosion", new Color(184,179,172), new Color(60, 63, 65) );
+          btnMorphologicalClosure = new Button("Mor. Closure", new Color(184,179,172), new Color(60, 63, 65) );
+          btnMorphologicalOpening = new Button("Mor. Opening", new Color(184,179,172), new Color(60, 63, 65) );
+
+
+          btnReset = new Button("Reset image", new Color(184,179,172), new Color(60, 63, 65) );
+
+          btnFilter = new Button("Filter", new Color(184,179,172), new Color(60, 63, 65));
+          btnGroupFilter = new ButtonGroup();
+          btnRadioLowFilter = new ButtonRadio("Low",new Color(184,179,172), new Color(60, 63, 65) );
+          btnRadioHighFilter = new ButtonRadio("High",new Color(184,179,172), new Color(60, 63, 65) );
+          btnRadioGaussFilter = new ButtonRadio("Gauss",new Color(184,179,172), new Color(60, 63, 65) );
+          btnGroupFilter.add(btnRadioGaussFilter);
+          btnGroupFilter.add(btnRadioHighFilter);
+          btnGroupFilter.add(btnRadioLowFilter);
 
           //set grid
-          this.add(sliderDarkenOrBrighten, new GBC(0, 0, 15, 2).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
-         // this.add(labelDarkenOrBrighten, new GBC(0, 1, 15, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
-          this.add(btnRadioDarken, new GBC(19, 0, 3, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
-          this.add(btnRadioBrighten, new GBC(19, 1, 3, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
-          this.add(btnDarkenOrBrighten, new GBC(25, 0, 3, 2).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
+          this.add(sliderDarkenOrBrighten, new GBC(0, 0, 2, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
+          this.add(btnDarken, new GBC(0, 1, 1, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
+          this.add(btnBrighten, new GBC(1, 1, 1, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
+
+          this.add(sliderThresholding, new GBC(0, 2, 2, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10));
+          this.add(btnThresholding, new GBC(0, 3, 1, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10));
+          this.add(btnDilatation, new GBC(1, 3, 1, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10));
+          this.add(btnErosion, new GBC(2, 3, 1, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10));
+          this.add(btnMorphologicalClosure, new GBC(3, 3, 1, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
+          this.add(btnMorphologicalOpening, new GBC(4, 3, 1, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
+
+          this.add(btnFilter, new GBC(0, 4, 1, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
+          this.add(btnRadioLowFilter, new GBC(1, 4, 1, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
+          this.add(btnRadioHighFilter, new GBC(2, 4, 1, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
+          this.add(btnRadioGaussFilter, new GBC(3, 4, 1, 1).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
 
 
-          this.add(sliderThresholding, new GBC(0, 2, 15, 2).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
-          this.add(btnDilatation, new GBC(15, 2, 5, 2).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
-          this.add(btnErosion, new GBC(20, 2, 5, 2).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
-          this.add(btnThresholding, new GBC(25, 2, 3, 2).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
+            this.add(btnReset, new GBC(0, 5, 6, 2).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
 
-          this.add(btnReset, new GBC(0, 4, 29, 2).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
-          this.add(btnLowPassFilter, new GBC(0, 6, 29, 2).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
-          this.add(btnHighPassFilter, new GBC(0, 8, 29, 2).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
-          this.add(btnGaussPassFilter, new GBC(0, 10, 29, 2).setFill(GBC.HORIZONTAL).setInsets(10, 10, 10, 10).setAnchor(GBC.WEST));
 
-          btnRadioDarken.setSelected(true);
 
-        btnDarkenOrBrighten.addActionListener(e -> {
+        setEnableBtn(false);
+        btnRadioLowFilter.setSelected(true);
 
-            if(btnRadioDarken.isSelected())
+
+
+        btnDarken.addActionListener(e -> {
                 utils.dark(sliderDarkenOrBrighten.getValue());
-            else if (btnRadioBrighten.isSelected())
-                utils.light(sliderDarkenOrBrighten.getValue());
-
-
         });
 
-        sliderDarkenOrBrighten.addChangeListener(e->{
-            int val = sliderDarkenOrBrighten.getValue();
-            //labelDarkenOrBrighten.setText("Value = "+val);
+        btnBrighten.addActionListener(e -> {
+            utils.light(sliderDarkenOrBrighten.getValue());
         });
 
-        sliderThresholding.addChangeListener(e->{
-            int val = sliderThresholding.getValue();
-           // labelThresholding.setText("Value = "+val);
-        });
-//
-//        btnMinusTo.addActionListener(e->{
-//            String color = utils.parseColorToString("to", -5);
-//            rgbTo.setText(color);
-//        });
+
+
 
 
 
         btnThresholding.addActionListener(e -> {
             utils.inverse(sliderThresholding.getValue(), new Color(0, 0, 0), new Color(255, 255, 255));
+            setEnableBtn(true);
         });
 
         btnReset.addActionListener(e->{
              utils.resetImage();
-             System.out.println("ok");
+             setEnableBtn(false);
         });
 
-        btnLowPassFilter.addActionListener( e->{
-            utils.filterLowPass();
+        btnFilter.addActionListener( e->{
+            if(btnRadioLowFilter.isSelected())
+                utils.filterLowPass();
+            else if(btnRadioHighFilter.isSelected())
+                utils.filterHighPass();
+            else if(btnRadioGaussFilter.isSelected())
+                utils.filterGauss();
         });
 
-        btnHighPassFilter.addActionListener( e->{
-            utils.filterHighPass();
-        });
-
-        btnGaussPassFilter.addActionListener( e->{
-            utils.filterGaussPass();
-        });
 
         btnDilatation.addActionListener( e->{
             utils.dilatation();
@@ -141,5 +132,20 @@ public class ToolsPanel extends JPanel {
         btnErosion.addActionListener( e->{
             utils.erosion();
         });
+
+        btnMorphologicalOpening.addActionListener( e->{
+            utils.morphologicalOpening();
+        });
+
+        btnMorphologicalClosure.addActionListener( e->{
+            utils.morphologicalClosure();
+        });
+    }
+
+    private void setEnableBtn(boolean val){
+        btnDilatation.setEnabled(val);
+        btnErosion.setEnabled(val);
+        btnMorphologicalClosure.setEnabled(val);
+        btnMorphologicalOpening.setEnabled(val);
     }
 }

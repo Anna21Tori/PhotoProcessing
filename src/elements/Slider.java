@@ -6,7 +6,7 @@ import java.awt.*;
 public class Slider extends JSlider {
     public Slider(int min, int max, int value) {
         super(min, max, value);
-
+        this.setPreferredSize(new Dimension(200, 200));
         this.setBackground(new Color(60, 63, 65));
         this.setForeground(new Color(184,179,172));
         this.setPaintTrack(true);
